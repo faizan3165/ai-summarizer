@@ -63,11 +63,31 @@ const Demo = () => {
           <button
             type="submit"
             className="submit_btn peer-focus:border-gray-700 peer-focus:text-gray-700"
-          ></button>
+          >
+            <p>↵</p>
+          </button>
         </form>
 
         {/* Browse History */}
-      
+        <div className="flex flex-col gap-1 max-h-60 overflow-y-auto">
+          {allArticles.map((article, index) => (
+            <div
+              className="link_card"
+              key={`link-${index}`}
+              onClick={() => setArticle(article)}
+            >
+              <div className="copy_btn">
+                <img
+                  src={copy}
+                  alt="copy_icon"
+                  className="w-[40%] h-[40%] object-contain"
+                />
+              </div>
+
+              <p className="flex-1 font-satoshi text-blue-700 font-medium text-sm truncate">{article.url}</p>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Display Results */}
