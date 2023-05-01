@@ -10,19 +10,31 @@ const Demo = () => {
     summary: "",
   });
 
+  const [allArticles, setAllArticles] = useState([]);
+
   const [getSummary, { error, isFetching }] = useLazyGetSummaryQuery();
+
+  useEffect(() => {
+    const localStorageArticles = JSON.parse(localStorage.getItem("articles"));
+
+    if (localStorageArticles) {
+      setAllArticles(localStorageArticles);
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     const { data } = await getSummary({ articleUrl: article.url });
 
     if (data?.summary) {
       const newArticle = { ...article, summary: data.summary };
+      const updatedAllArticles = [newArticle, ...allArticles];
 
       setArticle(newArticle);
+      setAllArticles(updatedAllArticles);
 
-      console.log(newArticle);
+      localStorage.setItem("articles", JSON.stringify(updatedAllArticles));
     }
   };
 
@@ -51,12 +63,11 @@ const Demo = () => {
           <button
             type="submit"
             className="submit_btn peer-focus:border-gray-700 peer-focus:text-gray-700"
-          >
-            <p>↵</p>
-          </button>
+          ></button>
         </form>
 
         {/* Browse History */}
+      
       </div>
 
       {/* Display Results */}
